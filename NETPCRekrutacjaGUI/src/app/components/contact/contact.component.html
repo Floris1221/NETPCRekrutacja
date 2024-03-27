@@ -1,0 +1,44 @@
+<div class="container mt-5">
+  <h2>Add New Contact</h2>
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+    <div class="form-group pt-3">
+      <div class="input-field" [class.error]="contactForm.controls['firstName'].dirty && contactForm.hasError('required', 'firstName')">
+        <span class="fa fa-user p-2"></span>
+        <input formControlName="firstName" type="text" placeholder="First Name" required>
+      </div>
+      <small *ngIf="contactForm.controls['firstName'].dirty && contactForm.hasError('required', 'firstName')" class="text-danger">*First Name is required*</small>
+    </div>
+
+    <div class="form-group pt-3">
+      <div class="input-field" [class.error]="contactForm.controls['lastName'].dirty && contactForm.hasError('required', 'lastName')">
+        <span class="fa fa-user p-2"></span>
+        <input formControlName="lastName" type="text" placeholder="Last Name" required>
+      </div>
+      <small *ngIf="contactForm.controls['lastName'].dirty && contactForm.hasError('required', 'lastName')" class="text-danger">*Last Name is required*</small>
+    </div>
+
+    <div class="form-group pt-3">
+      <div class="input-field" [class.error]="contactForm.controls['email'].dirty && contactForm.hasError('required', 'email')">
+        <span class="fa fa-envelope p-2"></span>
+        <input formControlName="email" type="email" placeholder="Email" required style="border: none;">
+      </div>
+      <small *ngIf="contactForm.controls['email'].dirty && contactForm.hasError('required', 'email')" class="text-danger">*Email is required*</small>
+    </div>
+
+    <div class="form-group pt-3">
+      <div class="input-field">
+        <span class="fa fa-phone p-2"></span>
+        <input formControlName="phone" type="text" placeholder="Phone" required>
+      </div>
+    </div>
+
+    <div class="form-group pt-3">
+      <label for="category" class="form-label">Category</label>
+      <select class="form-control" formControlName="category" required>
+        <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block mt-4 w-100">Add Contact</button>
+  </form>
+</div>
