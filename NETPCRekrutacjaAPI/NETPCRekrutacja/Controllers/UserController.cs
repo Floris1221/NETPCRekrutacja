@@ -63,10 +63,9 @@ namespace AngularAuthYtAPI.Controllers
         private string CreateJwt(User user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("veryverysceret.....");
+            var key = Encoding.ASCII.GetBytes("veryverysceret....."); //should be in secrests
             var identity = new ClaimsIdentity(new Claim[]
             {
-                new Claim(ClaimTypes.Role, user.Role),
                 new Claim(ClaimTypes.Name,$"{user.Username}")
             });
 
@@ -75,7 +74,7 @@ namespace AngularAuthYtAPI.Controllers
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = identity,
-                Expires = DateTime.Now.AddSeconds(10),
+                Expires = DateTime.Now.AddSeconds(3600),
                 SigningCredentials = credentials
             };
             var token = jwtTokenHandler.CreateToken(tokenDescriptor);
@@ -98,7 +97,7 @@ namespace AngularAuthYtAPI.Controllers
 
         private ClaimsPrincipal GetPrincipleFromExpiredToken(string token)
         {
-            var key = Encoding.ASCII.GetBytes("veryverysceret.....");
+            var key = Encoding.ASCII.GetBytes("veryverysceret....."); //should be in secret
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateAudience = false,

@@ -22,9 +22,18 @@ namespace AngularAuthYtAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Contact>> GetAllCategories()
+        public async Task<ActionResult<Category>> GetAllCategories()
         {
             return Ok(await _authContext.Categories.ToListAsync());
+        }
+
+
+        [HttpGet("subcategory")]
+        public async Task<ActionResult<SubCategory>> GetAllSubcategories()
+        {
+            return Ok(await _authContext.Subcategories
+                .Where(subcategory => subcategory.Base == true)
+                .ToListAsync());
         }
     }
 }

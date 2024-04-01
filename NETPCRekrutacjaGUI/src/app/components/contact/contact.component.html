@@ -1,44 +1,76 @@
 <div class="container mt-5">
-  <h2>Add New Contact</h2>
+  <h2>{{ contactId ? (auth.isLoggedIn() ? 'Edit' : 'Details') : 'Add New' }} Contact</h2>
+  <button type="button" class="btn btn-secondary" (click)="goBack()">Go Back</button>
   <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
     <div class="form-group pt-3">
-      <div class="input-field" [class.error]="contactForm.controls['firstName'].dirty && contactForm.hasError('required', 'firstName')">
+      <div class="input-field">
         <span class="fa fa-user p-2"></span>
-        <input formControlName="firstName" type="text" placeholder="First Name" required>
+        <input formControlName="firstName" type="text" placeholder="First Name" required [readonly]="!auth.isLoggedIn()">
       </div>
       <small *ngIf="contactForm.controls['firstName'].dirty && contactForm.hasError('required', 'firstName')" class="text-danger">*First Name is required*</small>
     </div>
 
     <div class="form-group pt-3">
-      <div class="input-field" [class.error]="contactForm.controls['lastName'].dirty && contactForm.hasError('required', 'lastName')">
+      <div class="input-field">
         <span class="fa fa-user p-2"></span>
-        <input formControlName="lastName" type="text" placeholder="Last Name" required>
+        <input formControlName="lastName" type="text" placeholder="Last Name" required [readonly]="!auth.isLoggedIn()">
       </div>
       <small *ngIf="contactForm.controls['lastName'].dirty && contactForm.hasError('required', 'lastName')" class="text-danger">*Last Name is required*</small>
     </div>
 
     <div class="form-group pt-3">
-      <div class="input-field" [class.error]="contactForm.controls['email'].dirty && contactForm.hasError('required', 'email')">
+      <div class="input-field">
         <span class="fa fa-envelope p-2"></span>
-        <input formControlName="email" type="email" placeholder="Email" required style="border: none;">
+        <input formControlName="email" type="email" placeholder="Email" required style="border: none;" [readonly]="!auth.isLoggedIn()">
       </div>
       <small *ngIf="contactForm.controls['email'].dirty && contactForm.hasError('required', 'email')" class="text-danger">*Email is required*</small>
+      <small *ngIf="contactForm.controls['email'].errors?.['emailTaken']" class="text-danger">*Email has already been taken*</small>
     </div>
 
     <div class="form-group pt-3">
       <div class="input-field">
         <span class="fa fa-phone p-2"></span>
-        <input formControlName="phone" type="text" placeholder="Phone" required>
+        <input formControlName="phone" type="text" placeholder="Phone" required [readonly]="!auth.isLoggedIn()">
       </div>
     </div>
 
     <div class="form-group pt-3">
       <label for="category" class="form-label">Category</label>
-      <select class="form-control" formControlName="category" required>
+      <select class="form-control" formControlName="category" required [disabled]="!auth.isLoggedIn()">
         <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
       </select>
     </div>
 
-    <button type="submit" class="btn btn-primary btn-block mt-4 w-100">Add Contact</button>
+    <div class="form-group pt-3" *ngIf="contactForm.get('category')?.value == 1">
+      <label for="subcategory" class="form-label">Subcategory</label>
+      <select class="form-control" formControlName="subcategory">
+        <option *ngFor="let subcategory of subcategories" [value]="subcategory.id">{{subcategory.name}}</option>
+      </select>
+    </div>
+    
+    <div class="form-group pt-3" *ngIf="contactForm.get('category')?.value == 3">
+      <label for="newSubcategory" class="form-label">Subcategory</label>
+      <input type="text" class="form-control" formControlName="newSubcategory" placeholder="Enter new subcategory">
+    </div>
+
+    <div class="form-group pt-3">
+      <div class="input-field">
+        <span class="fa fa-lock p-2"></span>
+        <input formControlName="password" type="password" placeholder="Password" required [readonly]="!auth.isLoggedIn()">
+      </div>
+      <small *ngIf="contactForm.get('password')?.errors?.['passwordComplexity']" class="text-danger">*Password does not meet complexity requirements*</small>
+    </div>
+
+    <div class="form-group pt-3">
+      <label for="dateOfBirth" class="form-label">Date of Birth</label>
+      <div class="input-field">
+        <span class="fa fa-calendar p-2"></span>
+        <input formControlName="dateOfBirth" type="date" style="border: none;" required [readonly]="!auth.isLoggedIn()">
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block mt-4 w-100" *ngIf="auth.isLoggedIn()">
+      {{ contactId ? 'Edit' : 'Add' }} Contact
+    </button>
   </form>
 </div>

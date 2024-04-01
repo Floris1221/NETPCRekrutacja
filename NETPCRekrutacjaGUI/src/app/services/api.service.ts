@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
   providedIn: 'root',
@@ -17,11 +18,24 @@ export class ApiService {
     return this.http.post<any>(`${this.contactUrl}addContact`, contact);
   }
 
-  getContact() {
-    return this.http.get<any>(this.contactUrl);
+  getContact(contactId: string) {
+    return this.http.get<any>(`${this.contactUrl}${contactId}`);
+  }
+
+  updateContact(contactId : string, contact : any) {
+    return this.http.put<any>(`${this.contactUrl}${contactId}`, contact);
   }
 
   getCategories(){
     return this.http.get<any>(this.categoryUrl);
   }
+
+  getSubcategories(){
+    return this.http.get<any>(`${this.categoryUrl}subcategory`);
+  }
+  
+  checkEmailUniqueness(email: string, contactId?: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.contactUrl}check-email?email=${email}`+ (contactId ? `&contactId=${contactId}` : ''));
+  }
+  
 }

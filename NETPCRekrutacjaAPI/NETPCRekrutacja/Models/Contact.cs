@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace AngularAuthYtAPI.Models
 {
@@ -32,17 +33,33 @@ namespace AngularAuthYtAPI.Models
         [Phone]
         public string Phone { get; set; }
 
-       
-        public DateTime DateOfBirth { get; set; }
 
-        public Contact(string FirstName, string LastName, string Email, string Phone, int CategoryId)
+        private DateTime _dateOfBirth;
+        public DateTime DateOfBirth
+        {
+            get => _dateOfBirth;
+            set => _dateOfBirth = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+        }
+
+        public Contact() { }
+
+        public Contact(string FirstName,
+            string LastName,
+            string Email,
+            string Phone,
+            int CategoryId,
+            int? Subcategory,
+            string Password,
+            string DateOfBirth)
         {
             this.FirstName = FirstName;
             this.LastName = LastName;
             this.Email = Email;
-            this.Password = "123";
+            this.Password = Password;
             this.CategoryId = CategoryId;
             this.Phone = Phone;
+            this.SubcategoryId = Subcategory;
+            this.DateOfBirth = DateTime.ParseExact(DateOfBirth, "yyyy-MM-dd", CultureInfo.InvariantCulture);
         }
 
     }

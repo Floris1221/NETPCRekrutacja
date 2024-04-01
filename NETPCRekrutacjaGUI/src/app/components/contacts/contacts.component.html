@@ -46,23 +46,24 @@
                   <thead>
                       <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Imię</th>
-                        <th scope="col">Nazwisko</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Telefon</th>
-                        <th scope="col">Kategoria</th>
-                        <th scope="col">Podkategoria</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Subcategory</th>
                       </tr>
                   </thead>
                   <tbody>
-                      <tr *ngFor="let contact of contacts; let i= index">
+                      <tr *ngFor="let contact of contacts; let i= index" (click)="goToContactDetails(contact.id)">
                         <td>{{i + 1}}</td>
                         <td>{{contact.firstName}}</td>
                         <td>{{contact.lastName}}</td>
                         <td>{{contact.email}}</td>
                         <td>{{contact.phone}}</td>
                         <td>{{contact.category.name}}</td>
-                        <td>{{'Brak'}}</td>
+                        <td>{{contact.subcategory != null ? contact.subcategory.name : ""}}</td>
+                        <td>{{contact.dateOfBirth | date: 'dd-MM-yyyy'}}</td>
                       </tr>
                   </tbody>
               </table>
